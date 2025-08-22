@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form hx-post="/api/todos" hx-target="#test" hx-swap="innerHTML">
+      <input id="title" name="title" type="text"
+          hx-trigger="change"
+      >
+      <input id="description" name="description" type="text"
+          hx-trigger="change">
+      <button type="submit">Submit</button>
+  </form>
+  <div id="test"></div>
+
+    <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+  </body>
+</html>
