@@ -1,4 +1,5 @@
 # ReactRustTodo
+
 Simple todo application with a Rust backend and a React frontend.
 
 Clone this repo, then cd into the "backend" directory and create a .env file. Provide your MYSQL database url in this format:
