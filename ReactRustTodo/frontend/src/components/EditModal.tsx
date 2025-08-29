@@ -15,7 +15,7 @@ interface EditModalProps {
 }
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -104,10 +104,12 @@ export const EditModal: React.FC<EditModalProps> = ({ todo, onUpdate }) => {
                     margin="normal"
                     name="description"
                   />
+                  Status:
                   <Checkbox
-                    defaultChecked={todo.completed}
+                    id="completed"
                     color="primary"
                     inputProps={{ "aria-label": "secondary checkbox" }}
+                    defaultChecked={todo.completed}
                     name="completed"
                   />
                   <Button

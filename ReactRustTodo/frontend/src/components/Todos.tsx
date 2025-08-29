@@ -32,14 +32,14 @@ const Todos = () => {
     await deleteTodo(nr);
   };
 
-    
+
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  const handleUpdate = async (todo: Todo ) => {
-    const updatedTodo = { ...todo, completed: !todo.completed };
+  const handleUpdate = async (todo: Todo) => {
+    const updatedTodo = { ...todo, completed: todo.completed };
     setTodos((Todos) =>
       Todos.map((todo) =>
         todo.todo_id === updatedTodo.todo_id ? updatedTodo : todo
@@ -53,7 +53,7 @@ const Todos = () => {
   const handleCreate = (newTodo: Todo) => {
     setTodos((Todos) => [newTodo, ...Todos]);
   };
-  
+
 
 
   return (
@@ -67,20 +67,20 @@ const Todos = () => {
                 <div className="flex">
                   {todo.completed ? (
                     <>
-                    <AssignmentLateIcon
-                      onClick={() => handleUpdate(todo)}
-                      className="text-blue-600 cursor-pointer hover:scale-125 transition"
-                    />
-                    <p className="pr-3">Done</p>
+                      <CheckIcon
+                        onClick={() => handleUpdate(todo)}
+                        className="text-green-600 cursor-pointer hover:scale-125 transition"
+                      />
+                      <p className="pr-3">Done</p>
                     </>
                   ) : (
                     <>
-                    <CheckIcon
-                      onClick={() => handleUpdate(todo)}
-                      className="text-green-600 cursor-pointer hover:scale-125 transition"
-                    />
-                    
-                    <p className="pr-3">Open</p>
+                      <AssignmentLateIcon
+                        onClick={() => handleUpdate(todo)}
+                        className="text-blue-600 cursor-pointer hover:scale-125 transition"
+                      />
+
+                      <p className="pr-3">Open</p>
                     </>
                   )}
                   <EditModal todo={todo} onUpdate={handleUpdate} />
