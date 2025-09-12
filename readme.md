@@ -11,3 +11,5 @@
 
 Dies ist eine kleine Todo App welche für die M450 Übungen aufbereitet wurde. Sie dient als Beispielapplikation um
 verschiedene Testarten zu demonstrieren.
+
+Die Übungen aus dem Unterricht wurden in den jeweiligen Repositories der Lernenden durchgeführt. Siehe Links oben. 
