@@ -194,7 +194,3 @@ Neue Features werden nach TDD-Prinzipien entwickelt:
 - **Test-Ausführung**: Entwicklungsteam + Qualitätskontrolle
 - **Bug-Fixing**: Entwicklungsteam
 - **Test-Dokumentation**: Entwicklungsteam
-
-## Approvals
-
-Dieses Testkonzept wird vom Modulverantwortlichen bei der Schlussabgabe überprüft und bewertet.

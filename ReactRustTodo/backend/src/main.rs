@@ -1,7 +1,9 @@
 #![allow(non_snake_case)]
 use actix_cors::Cors;
 use actix_files::Files;
-use actix_web::{get, http::header, middleware::Logger, web, App, HttpResponse, HttpServer, Responder, Result};
+use actix_web::{
+    get, http::header, middleware::Logger, web, App, HttpResponse, HttpServer, Responder, Result,
+};
 use serde::Serialize;
 
 mod api;
