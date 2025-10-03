@@ -1,5 +1,9 @@
 # 450 - Applikationen testen
 
+[![Frontend Coverage](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen/branch/main/graph/badge.svg?flag=frontend)](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen)
+[![Backend Coverage](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen/branch/main/graph/badge.svg?flag=backend)](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen)
+[![Total Coverage](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen/branch/main/graph/badge.svg)](https://codecov.io/gh/R06NV4LDR/M450---Applikationen-testen)
+
 - [GitLab M450](https://gitlab.com/ch-tbz-it/Stud/m450/m450)
 
 - [Rust Todo - Projekt Ausgangslage](https://github.com/Ezpcy/ReactRustTodo)
