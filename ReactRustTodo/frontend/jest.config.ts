@@ -1,21 +1,16 @@
-import type { Config } from "jest";
+import type { Config } from 'jest';
 
 const config: Config = {
-  preset: "ts-jest",
-  testEnvironment: "jsdom",
-  setupFiles: ["<rootDir>/src/mocks/test-polyfills.ts"],
-  setupFilesAfterEnv: ["<rootDir>/src/mocks/test-setup.ts"],
-  transform: {
-    "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: "tsconfig.jest.json" }]
-  },
+  preset: 'ts-jest',
+  testEnvironment: 'jest-environment-jsdom',
+  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   moduleNameMapper: {
-    "\\.(css|scss|sass|less)$": "identity-obj-proxy"
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testMatch: [
-    "<rootDir>/src/**/*.test.ts",
-    "<rootDir>/src/**/*.test.tsx"
-  ],
-  testPathIgnorePatterns: ["<rootDir>/tests/", "<rootDir>/tests-examples/"]
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html'],
+  testMatch: ['**/tests/unit/**/*.test.(ts|tsx)'],  // ✅ point to frontend/tests/unit
 };
 
 export default config;
