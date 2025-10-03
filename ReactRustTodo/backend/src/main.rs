@@ -1,39 +1,32 @@
 #![allow(non_snake_case)]
+use std::sync::Arc;
+
 use actix_cors::Cors;
 use actix_files::Files;
 use actix_web::{
     get, http::header, middleware::Logger, web, App, HttpResponse, HttpServer, Responder, Result,
 };
+use diesel::{
+    r2d2::{self, ConnectionManager},
+    MysqlConnection,
+};
+use dotenvy::dotenv;
 use serde::Serialize;
-
-mod api;
-mod models;
-mod repository;
-
-#[derive(Serialize)]
-pub struct Response {
-    pub message: String,
-}
-
-#[get("/health")]
-async fn health() -> impl Responder {
-    let response = Response {
-        message: "Everything is working fine".to_string(),
-    };
-    HttpResponse::Ok().json(response)
-}
-
-async fn not_found() -> Result<HttpResponse> {
-    let response = Response {
-        message: "Resource not found".to_string(),
-    };
-    Ok(HttpResponse::NotFound().json(response))
-}
+use TodoRustBackend::{
+    api,
+    repository::{mysql_repo::MysqlRepo, RepoBox},
+};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let todo_db = repository::database::Database::new();
-    let app_data = web::Data::new(todo_db);
+    dotenv().ok();
+    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let manager = ConnectionManager::<MysqlConnection>::new(database_url);
+    let pool = r2d2::Pool::builder()
+        .build(manager)
+        .expect("Failed to create pool.");
+    let mysql_repo = MysqlRepo { pool };
+    let repo: RepoBox = Arc::new(mysql_repo);
 
     HttpServer::new(move || {
         let cors = Cors::default()
@@ -46,11 +39,9 @@ async fn main() -> std::io::Result<()> {
                 header::ACCEPT,
             ]);
         App::new()
-            .app_data(app_data.clone())
+            .app_data(web::Data::new(repo.clone()))
             .configure(api::api::config)
-            .service(health)
             .service(Files::new("/", "./static").index_file("index.html"))
-            .default_service(web::route().to(not_found))
             .wrap(cors)
             .wrap(Logger::default())
     })

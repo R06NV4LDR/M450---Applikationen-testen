@@ -8,7 +8,7 @@ use std::{
 
 #[derive(Clone, Default)]
 pub struct MemRepo {
-    inner: Arc<Mutex<Vec<Todo>>>,
+    pub inner: Arc<Mutex<Vec<Todo>>>,
 }
 
 #[async_trait]

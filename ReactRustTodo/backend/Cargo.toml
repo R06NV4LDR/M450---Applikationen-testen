@@ -1,5 +1,5 @@
 [package]
-name = "TodoRustRocket"
+name = "TodoRustBackend"
 version = "0.1.0"
 edition = "2021"
 
@@ -18,3 +18,4 @@ async-trait = "0.1.89"
 
 [dev-dependencies]
 actix-rt = "2.11.0"
+serde_json = "1.0.145"
