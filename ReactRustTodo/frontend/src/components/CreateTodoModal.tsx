@@ -61,11 +61,12 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
 
   return (
     <div>
-      <AddIcon
+      <AddIcon id="createNewTaskIcon"
         sx={{ fontSize: "20px" }}
         className="cursor-pointer hover:scale-125 transition"
         onClick={handleOpen}
       />
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -121,6 +122,6 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
           </div>
         </Box>
       </Modal>
-    </div>
+    </div >
   );
 };

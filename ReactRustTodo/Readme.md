@@ -1,5 +1,7 @@
 # ReactRustTodo
 
+## Getting Started
+
 Simple todo application with a Rust backend and a React frontend.
 
 Clone this repo, then cd into the "backend" directory and create a .env file. Provide your MYSQL database url in this format:
@@ -19,3 +21,23 @@ Switch to the "frontend" directory and run:
 
 Finally serve the frontend with:
 `npm run dev`
+
+## Testing
+
+### Backend
+
+Run the tests with:
+
+### Frontend
+
+Frontend tests can be run with:
+
+```bash
+npx playwright test
+```
+
+Results will be shown in the terminal. To see a report, run:
+
+```bash
+npx playwright show-report
+```

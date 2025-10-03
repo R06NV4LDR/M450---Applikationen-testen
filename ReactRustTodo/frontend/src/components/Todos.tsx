@@ -58,7 +58,10 @@ const Todos = () => {
 
   return (
     <div>
+      <div id="createNewTask">
+
       <CreateTodoModal onCreate={handleCreate} />
+      </div>
       {todos.length ? (
         todos.slice((page - 1) * 10, page * 10).map((todo) => (
           <ul key={todo.todo_id}>
