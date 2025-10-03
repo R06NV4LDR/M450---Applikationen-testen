@@ -13,3 +13,8 @@
 | 7      | Einfügen von `Todo` Objekten in die DB | `Todo` Objekte können durch`create_todo()`in die Datenbank eingefügt werden.                                               |
 | 8      | Abfragen der `Todo` nach `id`          | `Todo` Objekte lassen sich von der Datenbank abfragen und geben das erwartende Object zurück.                              |
 | 9      |                                        |                                                                                                                            |
+
+
+## Frontend
+
+|
