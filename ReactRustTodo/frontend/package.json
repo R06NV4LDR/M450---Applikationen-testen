@@ -25,6 +25,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@codecov/vite-plugin": "^1.9.1",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
     "@types/react": "^18.2.15",
