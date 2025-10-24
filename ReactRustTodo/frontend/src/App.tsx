@@ -6,7 +6,7 @@ function App() {
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8080/health")
+    fetch("http://127.0.0.1:8080/api/health")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -37,7 +37,7 @@ function App() {
             <h1 className="text-xl">Todo with a Rust Backend!</h1>
             <h1 className="text-2xl pt-3 text-green-600">Todos:</h1>
             <Todos />
-          
+
           </BoxComponent>
         </div>
       ) : (
