@@ -180,9 +180,7 @@ async fn get_todo_by_id_not_found() {
     )
     .await;
 
-    let req = test::TestRequest::get()
-        .uri("/api/todos/999")
-        .to_request();
+    let req = test::TestRequest::get().uri("/api/todos/999").to_request();
     let resp = test::call_service(&app, req).await;
     assert_eq!(resp.status(), StatusCode::NOT_FOUND);
 }
@@ -222,7 +220,10 @@ async fn update_todo_by_id_success() {
     let updated_todo: Todo = test::read_body_json(update_resp).await;
     assert_eq!(updated_todo.todo_id, created_todo.todo_id);
     assert_eq!(updated_todo.title, "Updated title");
-    assert_eq!(updated_todo.description, Some("Updated description".to_string()));
+    assert_eq!(
+        updated_todo.description,
+        Some("Updated description".to_string())
+    );
     assert_eq!(updated_todo.completed, Some(true));
 }
 

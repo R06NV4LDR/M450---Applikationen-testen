@@ -18,7 +18,14 @@ verschiedene Testarten zu demonstrieren.
 
 Die Übungen aus dem Unterricht wurden in den jeweiligen Repositories der Lernenden durchgeführt. Siehe Links oben.
 
+## CI/CD
+
+Die CI/CD Pipeline ist unterteilt für Frontend und Backend.
+
+**Backend**
+    - Applikation wird getestet und Code Abdeckung wird zurückgegeben
+    - Applikation wird kompiliert
+
 ### Backend Dokumentation
 
-- [TODO](./ReactRustTodo/backend/Test Todos für das Backend.md)
-- [Dokumentation](./ReactRustTodo/backend/Backend Test Dokumentation.md)
+- [Dokumentation](./ReactRustTodo/backend/Backend%20Test%20Dokumentation.md)

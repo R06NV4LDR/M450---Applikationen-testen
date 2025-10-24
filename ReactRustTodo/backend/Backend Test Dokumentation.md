@@ -12,7 +12,7 @@ Das ist die Backend Applikation für Todo App. Sie wurde in der Programmiersprac
 
 ## Aufsetzen der Testumgebung
 
-TODO
+Da die erste Version der Applikation eine MYSQL Datenbank benötigte, musste für die Testumgebung ein Weg implementiert werden um diese Abhängigkeit zu entfernen. Die Lösung war eine In-Memory Datenbank [Source Code](./src/repository/mem_repo.rs). 
 
 ## Zusamenfassung der Tests
 
@@ -40,6 +40,3 @@ Model Tests (18 tests) - tests/models.rs
 - Edge cases (long text, special characters, Unicode, newlines, quotes)
 - Optional fields handling
 - Debug trait
-
-
-## 
