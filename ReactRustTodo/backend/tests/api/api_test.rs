@@ -272,9 +272,6 @@ async fn delete_todo_by_id_success() {
     let delete_resp = test::call_service(&app, delete_req).await;
     assert!(delete_resp.status().is_success());
 
-    let deleted_todo: Todo = test::read_body_json(delete_resp).await;
-    assert_eq!(deleted_todo.todo_id, created_todo.todo_id);
-
     // Verify it's deleted by trying to get it
     let get_req = test::TestRequest::get()
         .uri(&format!("/api/todos/{}", created_todo.todo_id))

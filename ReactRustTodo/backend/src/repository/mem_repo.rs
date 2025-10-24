@@ -50,9 +50,13 @@ impl TodoRepo for MemRepo {
         }
     }
 
-    async fn update_todo_by_id(&self, id: i32, mut todo: Todo) -> Option<Todo> {
+    async fn update_todo_by_id(&self, id: i32, todo: Todo) -> Option<Todo> {
         let mut v = self.inner.lock().unwrap();
-        let t = v.iter().find(|t| t.todo_id == id).replace(&todo);
-        Some(t.unwrap().to_owned())
+        if let Some(pos) = v.iter().position(|t| t.todo_id == id) {
+            v[pos] = todo.clone();
+            Some(todo)
+        } else {
+            None
+        }
     }
 }

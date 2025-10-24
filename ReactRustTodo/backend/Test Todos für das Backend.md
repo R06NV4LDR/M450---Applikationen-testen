@@ -1,22 +1,21 @@
 ## `api`
 
-- [ ] - Todo Erstellung
-- [ ] - Todo fetching nach ID
-- [ ] - Alle Todos fetchen
-- [ ] - Todo nach ID löschen
-- [ ] - Todo nach ID updaten
+- [x] - Todo Erstellung
+- [x] - Todo fetching nach ID
+- [x] - Alle Todos fetchen
+- [x] - Todo nach ID löschen
+- [x] - Todo nach ID updaten
 
 ## `todo`
 
-- [ ] - Todo Objekt Erstellung
-- [ ] - NewTodo Objekt Erstellung
-- [ ] - Überschreiben von Todo durch ein NewTodo Objekt
+- [x] - Todo Objekt Erstellung
+- [x] - NewTodo Objekt Erstellung
+- [x] - Überschreiben von Todo durch ein NewTodo Objekt
 
 ## `repository`
 
-- [ ] - Datenbank Initialisierung mit `Sqlite` und `dotenv`Variabeln
-- [ ] - Alle Todos fetchen
-- [ ] - Todo erstellen
-- [ ] - Todo nach ID fetchen
-- [ ] - Todo nach ID löschen
-- [ ] - Todo nach ID updaten
+- [x] - Alle Todos fetchen
+- [x] - Todo erstellen
+- [x] - Todo nach ID fetchen
+- [x] - Todo nach ID löschen
+- [x] - Todo nach ID updaten
