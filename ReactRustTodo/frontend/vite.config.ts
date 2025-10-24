@@ -8,8 +8,9 @@ export default defineConfig({
     react(),
     codecovVitePlugin({
       enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-      bundleName: "<bundle project name>",
+      bundleName: "react-rust-todo-frontend",
       uploadToken: process.env.CODECOV_TOKEN,
+      gitService: "github",
     }),
   ],
 })
