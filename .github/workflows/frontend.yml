@@ -29,8 +29,9 @@ jobs:
       - run: npm run test:cov
       - uses: codecov/codecov-action@v4
         with:
-          files: ./coverage/lcov.info
+          files: ./ReactRustTodo/frontend/coverage/lcov.info
           flags: frontend
+          name: frontend-coverage
           fail_ci_if_error: true
           # For private repos, uncomment and add repo secret
           # token: ${{ secrets.CODECOV_TOKEN }}

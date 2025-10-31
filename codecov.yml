@@ -1,0 +1,19 @@
+# codecov.yml im Repo-Root
+flag_management:
+  default_rules:
+    carryforward: true   # wenn z.B. nur Frontend hochlädt, bleibt Backend-Status vom letzten Upload bestehen
+  individual_flags:
+    - name: backend
+      paths:
+        - ReactRustTodo/backend/
+      statuses:
+        - type: project
+          target: 80
+          threshold: 2
+    - name: frontend
+      paths:
+        - ReactRustTodo/frontend/
+      statuses:
+        - type: project
+          target: 80
+          threshold: 2
