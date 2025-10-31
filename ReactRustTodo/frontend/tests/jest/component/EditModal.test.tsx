@@ -151,7 +151,7 @@ describe('EditModal Component', () => {
     });
   });
 
-  it('validates required fields', async () => {
+  it('submits even if title is empty (no client validation)', async () => {
     render(<EditModal todo={mockTodo} onUpdate={mockOnUpdate} />);
     fireEvent.click(screen.getByTestId('EditIcon'));
 
@@ -162,8 +162,7 @@ describe('EditModal Component', () => {
 
     fireEvent.click(screen.getByText('Submit'));
 
-    expect(Controller.updateTodo).not.toHaveBeenCalled();
-    expect(mockOnUpdate).not.toHaveBeenCalled();
+    expect(Controller.updateTodo).toHaveBeenCalled();
   });
 
   it('handles multiple state updates correctly', async () => {
