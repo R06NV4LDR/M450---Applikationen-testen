@@ -7,7 +7,8 @@ type Todo = {
   completed: boolean;
 };
 
-const FRONTEND_URL = 'http://localhost:5173/';
+// Use Playwright baseURL from config instead of hardcoding
+const FRONTEND_URL = '/';
 
 const corsHeaders = {
   'access-control-allow-origin': '*',
