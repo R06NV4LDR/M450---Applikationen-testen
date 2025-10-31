@@ -1,16 +1,13 @@
 import type { Config } from 'jest';
-
 const config: Config = {
-  preset: 'ts-jest',
-  testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
+  testEnvironment: 'jsdom',
   moduleNameMapper: {
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  collectCoverage: true,
+  setupFilesAfterEnv: ['<rootDir>/tests/jest/setup/jest.setup.ts'],
+  testMatch: ['**/tests/jest/**/*.(test|spec).(ts|tsx)'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/main.tsx'],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
-  testMatch: ['**/tests/unit/**/*.test.(ts|tsx)'],  // ✅ point to frontend/tests/unit
 };
-
 export default config;
