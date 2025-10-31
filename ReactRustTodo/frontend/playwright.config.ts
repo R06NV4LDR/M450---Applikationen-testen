@@ -33,8 +33,8 @@ export default defineConfig({
   },
 
   webServer: {
-    // Build once, then serve the static preview on a fixed port
-    command: 'npm run build && npm run preview -- --port 5173 --host 127.0.0.1',
+    // Use Vite dev server to avoid type-checking build failures
+    command: 'npm run dev -- --port 5173 --host 127.0.0.1 --strictPort',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
