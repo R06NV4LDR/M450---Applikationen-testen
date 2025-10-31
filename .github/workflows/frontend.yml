@@ -1,14 +1,27 @@
-name: CI
+name: Frontend Test (Jest + Playwright)
 on: [push, pull_request]
 
 jobs:
   jest:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: frontend } }
+    defaults:
+      run:
+        working-directory: ./ReactRustTodo/frontend
     steps:
+      - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
+      - name: Build backend
+        working-directory: ReactRustTodo/backend
+        run: cargo build --release
+      - name: Start backend
+        working-directory: ReactRustTodo/backend
+        run: |
+          nohup ./target/release/TodoRustBackend > backend.log 2>&1 &
+          echo $! > backend.pid
+
+      - run: npm install
       - run: npm ci
       - run: npm run test:cov
       - uses: codecov/codecov-action@v4
@@ -16,14 +29,44 @@ jobs:
           files: ./frontend/coverage/lcov.info
           flags: frontend-jest
 
+      # Always stop backend
+      - name: Stop backend
+        if: always()
+        working-directory: ReactRustTodo/backend
+        run: |
+          kill $(cat backend.pid) 2>/dev/null || true
+          rm -f backend.pid
+
   playwright:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: frontend } }
+    defaults:
+      run:
+        working-directory: ./ReactRustTodo/frontend
     steps:
+      - uses: dtolnay/rust-toolchain@stable
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: npm ci
+
+      - name: Build backend
+        working-directory: ReactRustTodo/backend
+        run: cargo build --release
+      - name: Start backend
+        working-directory: ReactRustTodo/backend
+        run: |
+          nohup ./target/release/TodoRustBackend > backend.log 2>&1 &
+          echo $! > backend.pid
+
+      - run: chmod +x run_backend.sh
+      - run: ./run_backend.sh &
+      - run: npm install
       - run: npx playwright install --with-deps
-      - run: npm run build && npm run preview & npx wait-on http://localhost:4173
-      - run: npx playwright test
+      - run: npm run playwright
+
+        # Always stop backend
+      - name: Stop backend
+        if: always()
+        working-directory: ReactRustTodo/backend
+        run: |
+          kill $(cat backend.pid) 2>/dev/null || true
+          rm -f backend.pid

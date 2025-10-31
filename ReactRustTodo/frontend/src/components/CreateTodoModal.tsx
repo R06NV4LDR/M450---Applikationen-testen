@@ -31,7 +31,6 @@ export const CreateTodoModal: React.FC<CreateTodoModalProps> = ({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [todos, setTodos] = React.useState<Todo[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

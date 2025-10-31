@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+const API_LOCALHOST = 'http://localhost:8080/api/todos';
+const API_127 = 'http://127.0.0.1:8080/api/todos';
+const API_HEALTH_127 = 'http://127.0.0.1:8080/api/health';
+
 test('has title', async ({ page }) => {
-  const response = await page.goto('http://localhost:5173/');
+  const response = await page.goto('/');
 
   expect(response?.status()).toBe(200);
 
@@ -10,7 +14,7 @@ test('has title', async ({ page }) => {
 });
 
 // test('create new todo task', async ({ page }) => {
-//   await page.goto('http://localhost:5173/');
+//   await page.goto('/');
 
 // // Klick auf das Plus-Symbol, um das Modal zu öffnen
 // await page.click('#createNewTaskIcon');
@@ -39,7 +43,47 @@ test('has title', async ({ page }) => {
 // });
 
 test('create new todo task via modal', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  // Mock backend endpoints so test runs without real API
+  await page.route(API_HEALTH_127, async (route) => {
+    await route.fulfill({
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ message: 'Everything is working fine' }),
+    });
+  });
+  await page.route(API_127, async (route) => {
+    if (route.request().method() === 'GET') {
+      await route.fulfill({
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify([]),
+      });
+      return;
+    }
+    await route.fallback();
+  });
+
+  await page.route(API_LOCALHOST, async (route) => {
+    if (route.request().method() === 'POST') {
+      const data = route.request().postDataJSON?.() ?? {};
+      const created = {
+        todo_id: Date.now(),
+        title: data.title ?? 'Untitled',
+        description: data.description ?? '',
+        completed: !!data.completed,
+        createdAt: new Date().toISOString().slice(0, 10),
+      };
+      await route.fulfill({
+        status: 201,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(created),
+      });
+      return;
+    }
+    await route.fallback();
+  });
+
+  await page.goto('/');
 
   // Eindeutiger Titel, um Kollisionen zu vermeiden
   const title = `Playwright lernen ${Date.now()}`;

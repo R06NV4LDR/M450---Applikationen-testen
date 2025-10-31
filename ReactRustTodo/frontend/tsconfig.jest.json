@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["jest", "node"]
   },
@@ -10,10 +8,7 @@
     "src",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/mocks/**/*.ts",
-    "src/mocks/**/*.tsx",
-    "src/__tests__/**/*.ts",
-    "src/__tests__/**/*.tsx",
-    "jest.setup.ts"
+    "tests/jest/**/*.ts",
+    "tests/jest/**/*.tsx"
   ]
 }
