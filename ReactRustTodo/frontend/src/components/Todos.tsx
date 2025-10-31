@@ -9,7 +9,6 @@ import "../middleware/Controller";
 import { updateTodo, deleteTodo } from "../middleware/Controller";
 import { EditModal } from "./EditModal";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Create } from "@mui/icons-material";
 import { CreateTodoModal } from "./CreateTodoModal";
 
 const Todos = () => {
