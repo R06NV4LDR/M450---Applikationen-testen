@@ -30,7 +30,7 @@ Run the tests with:
 
 ### Frontend
 
-Frontend tests can be run with:
+E2E tests can be run with:
 
 ```bash
 npx playwright test
@@ -40,4 +40,10 @@ Results will be shown in the terminal. To see a report, run:
 
 ```bash
 npx playwright show-report
+```
+
+Jest unit tests can be run with:
+
+```bash
+npm run test:cov
 ```
