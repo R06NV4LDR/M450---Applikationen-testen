@@ -1,4 +1,4 @@
-name: CI
+name: Frontend Test (Jest + Playwright)
 on: [push, pull_request]
 
 jobs:
