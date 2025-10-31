@@ -214,25 +214,88 @@ fn test_todo_debug_trait() {
 
 #[test]
 fn test_todo_deserialization_minimal() {
-    // RONNY
+    let json = r#"{
+        "todo_id": 1,
+        "title": "Minimal Todo",
+        "description": null,
+        "created_at": null,
+        "completed": null
+    }"#;
+
+    let todo: Todo = serde_json::from_str(json).unwrap();
+    assert_eq!(todo.todo_id, 1);
+    assert_eq!(todo.title, "Minimal Todo");
+    assert_eq!(todo.description, None);
+    assert_eq!(todo.created_at, None);
+    assert_eq!(todo.completed, None);
 }
 
 #[test]
 fn test_empty_title() {
-    // RONNY
+    let json = r#"{
+        "todo_id": 1,
+        "title": "",
+        "description": null,
+        "created_at": null,
+        "completed": null
+    }"#;
+
+    let todo: Todo = serde_json::from_str(json).unwrap();
+    assert_eq!(todo.todo_id, 1);
+    assert_eq!(todo.title, "");
+    assert_eq!(todo.description, None);
+    assert_eq!(todo.created_at, None);
+    assert_eq!(todo.completed, None);
 }
 
 #[test]
 fn test_todo_completed_states() {
-    // RONNY
+    let json = r#"{
+        "todo_id": 1,
+        "title": "Test Todo",
+        "description": "Test Description",
+        "created_at": null,
+        "completed": true
+    }"#;
+
+    let todo: Todo = serde_json::from_str(json).unwrap();
+    assert_eq!(todo.todo_id, 1);
+    assert_eq!(todo.title, "Test Todo");
+    assert_eq!(todo.description, Some("Test Description".to_string()));
+    assert_eq!(todo.created_at, None);
+    assert_eq!(todo.completed, Some(true));
 }
 
 #[test]
 fn test_create_todo_without_optional_fields() {
-    // RONNY
+    let json = r#"{
+        "title": "New Todo",
+        "description": null,
+        "created_at": null,
+        "completed": null
+    }"#;
+
+    let new_todo: NewTodo = serde_json::from_str(json).unwrap();
+    assert_eq!(new_todo.title, "New Todo");
+    assert_eq!(new_todo.description, None);
+    assert_eq!(new_todo.created_at, None);
+    assert_eq!(new_todo.completed, None);
 }
 
 #[test]
 fn test_todo_with_special_characters() {
-    // RONNY
+    let json = r#"{
+        "todo_id": 1,
+        "title": "New Todo",
+        "description": "Description with special characters !@#$%^&*()",
+        "created_at": null,
+        "completed": null
+    }"#;
+
+    let todo: Todo = serde_json::from_str(json).unwrap();
+    assert_eq!(todo.todo_id, 1);
+    assert_eq!(todo.title, "New Todo");
+    assert_eq!(todo.description, Some("Description with special characters !@#$%^&*()".to_string()));
+    assert_eq!(todo.created_at, None);
+    assert_eq!(todo.completed, None);
 }

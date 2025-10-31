@@ -251,27 +251,89 @@ async fn full_crud_workflow() {
 
 #[actix_web::test]
 async fn delete_todo_by_id_not_found() {
-    // RONNY
+    let app = test::init_service(
+        App::new()
+            .app_data(web::Data::new(test_mem_repo()))
+            .configure(api::api::config),
+    )
+    .await;
+
+    let req = test::TestRequest::delete()
+        .uri("/api/todos/999")
+        .to_request();
+    let resp = test::call_service(&app, req).await;
+    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
 }
 
 // Get todo by id tests
 #[actix_web::test]
 async fn get_todo_by_id_success() {
-    //RONNY
+    let app = test::init_service(
+        App::new()
+            .app_data(web::Data::new(test_mem_repo()))
+            .configure(api::api::config),
+    )
+    .await;
+
+    let req = test::TestRequest::get()
+        .uri("/api/todos/1")
+        .to_request();
+    let resp = test::call_service(&app, req).await;
+    assert_eq!(resp.status(), StatusCode::OK);
 }
 
 #[actix_web::test]
 async fn get_todo_by_id_not_found() {
-    // RONNY
+    let app = test::init_service(
+        App::new()
+            .app_data(web::Data::new(test_mem_repo()))
+            .configure(api::api::config),
+    )
+    .await;
+
+    let req = test::TestRequest::get()
+        .uri("/api/todos/999")
+        .to_request();
+    let resp = test::call_service(&app, req).await;
+    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
 }
 
 #[actix_web::test]
 async fn create_todo_without_description() {
-    // RONNY
+    let app = test::init_service(
+        App::new()
+            .app_data(web::Data::new(test_mem_repo()))
+            .configure(api::api::config),
+    )
+    .await;
+
+    let req = test::TestRequest::post()
+        .uri("/api/todos")
+        .set_json(&json!({ "title": "Buy groceries" }))
+        .to_request();
+    let resp = test::call_service(&app, req).await;
+    assert!(resp.status().is_success());
+    let created_todo: Todo = test::read_body_json(resp).await;
+    assert_eq!(created_todo.title, "Buy groceries");
 }
 
 // Create todo tests
 #[actix_web::test]
-async fn create_todo_test() {
-    // RONNY
+async fn create_todo_success() {
+    let app = test::init_service(
+        App::new()
+            .app_data(web::Data::new(test_mem_repo()))
+            .configure(api::api::config),
+    )
+    .await;
+
+    let req = test::TestRequest::post()
+        .uri("/api/todos")
+        .set_json(&json!({ "title": "New todo", "description": "New description" }))
+        .to_request();
+    let resp = test::call_service(&app, req).await;
+    assert!(resp.status().is_success());
+    let created_todo: Todo = test::read_body_json(resp).await;
+    assert_eq!(created_todo.title, "New todo");
+    assert_eq!(created_todo.description, Some("New description".to_string()));
 }

@@ -321,16 +321,34 @@ async fn test_todo_id_resets_after_empty() {
 
 #[actix_web::test]
 async fn test_create_todo() {
-    // RONNY
+    let repo = create_test_repo();
+
+    let new_todo = create_new_todo("Ronny's Test Todo", Some("Testing creation"));
+    let result = repo.create_todo(new_todo).await;
+    assert!(result.is_ok());
 }
 
 #[actix_web::test]
 async fn test_create_todo_without_description() {
-    // RONNY
+    let repo = create_test_repo();
+
+    let new_todo = create_new_todo("No Description Todo", None);
+    let result = repo.create_todo(new_todo).await;
+    assert!(result.is_ok());
 }
 
 // New Todos should increment their ID automatically (in memory db behaviour)
 #[actix_web::test]
 async fn test_todo_id_increments() {
-    // RONNY
+    let repo = create_test_repo(); 
+    let todo1 = repo
+        .create_todo(create_new_todo("First Todo", None))
+        .await
+        .unwrap();
+    assert_eq!(todo1.todo_id, 1);
+    let todo2 = repo
+        .create_todo(create_new_todo("Second Todo", None))
+        .await
+        .unwrap();
+    assert_eq!(todo2.todo_id, 2);
 }
