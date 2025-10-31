@@ -4,12 +4,12 @@ import { render, screen, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "../../../src/App";
 
-jest.mock("./components/Todos", () => ({
+jest.mock("../../../src/components/Todos", () => ({
   __esModule: true,
   default: () => <div data-testid="todos">Todos component</div>,
 }));
 
-jest.mock("./providers/BoxProvider", () => ({
+jest.mock("../../../src/providers/BoxProvider", () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="box">{children}</div>
