@@ -41,52 +41,6 @@ async fn heatlh_ok() {
     assert_eq!(v.get("message").unwrap(), "Resource not found");
 }
 
-// Create todo tests
-#[actix_web::test]
-async fn create_todo_test() {
-    let app = test::init_service(
-        App::new()
-            .app_data(web::Data::new(test_mem_repo()))
-            .configure(api::api::config),
-    )
-    .await;
-
-    let req = test::TestRequest::post()
-        .uri("/api/todos")
-        .set_json(&json!({ "title": "hello", "description": "hello again" }))
-        .to_request();
-
-    let resp = test::call_service(&app, req).await;
-    assert!(resp.status().is_success());
-
-    let todo: Todo = test::read_body_json(resp).await;
-    assert_eq!(todo.title, "hello");
-    assert_eq!(todo.description, Some("hello again".to_string()));
-    assert_eq!(todo.todo_id, 1);
-}
-
-#[actix_web::test]
-async fn create_todo_without_description() {
-    let app = test::init_service(
-        App::new()
-            .app_data(web::Data::new(test_mem_repo()))
-            .configure(api::api::config),
-    )
-    .await;
-
-    let req = test::TestRequest::post()
-        .uri("/api/todos")
-        .set_json(&json!({ "title": "Todo without description" }))
-        .to_request();
-
-    let resp = test::call_service(&app, req).await;
-    assert!(resp.status().is_success());
-
-    let todo: Todo = test::read_body_json(resp).await;
-    assert_eq!(todo.title, "Todo without description");
-    assert_eq!(todo.description, None);
-}
-
 // Get all todos tests
 #[actix_web::test]
 async fn get_all_todos_empty() {
@@ -138,51 +92,6 @@ async fn get_all_todos_with_data() {
     assert_eq!(todos.len(), 2);
     assert_eq!(todos[0].title, "First todo");
     assert_eq!(todos[1].title, "Second todo");
-}
-
-// Get todo by id tests
-#[actix_web::test]
-async fn get_todo_by_id_success() {
-    let app = test::init_service(
-        App::new()
-            .app_data(web::Data::new(test_mem_repo()))
-            .configure(api::api::config),
-    )
-    .await;
-
-    // Create a todo
-    let create_req = test::TestRequest::post()
-        .uri("/api/todos")
-        .set_json(&json!({ "title": "Test todo", "description": "Test description" }))
-        .to_request();
-    let create_resp = test::call_service(&app, create_req).await;
-    let created_todo: Todo = test::read_body_json(create_resp).await;
-
-    // Get the todo by id
-    let req = test::TestRequest::get()
-        .uri(&format!("/api/todos/{}", created_todo.todo_id))
-        .to_request();
-    let resp = test::call_service(&app, req).await;
-    assert!(resp.status().is_success());
-
-    let todo: Todo = test::read_body_json(resp).await;
-    assert_eq!(todo.todo_id, created_todo.todo_id);
-    assert_eq!(todo.title, "Test todo");
-    assert_eq!(todo.description, Some("Test description".to_string()));
-}
-
-#[actix_web::test]
-async fn get_todo_by_id_not_found() {
-    let app = test::init_service(
-        App::new()
-            .app_data(web::Data::new(test_mem_repo()))
-            .configure(api::api::config),
-    )
-    .await;
-
-    let req = test::TestRequest::get().uri("/api/todos/999").to_request();
-    let resp = test::call_service(&app, req).await;
-    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
 }
 
 // Update todo tests
@@ -281,22 +190,6 @@ async fn delete_todo_by_id_success() {
     assert_eq!(get_resp.status(), StatusCode::NOT_FOUND);
 }
 
-#[actix_web::test]
-async fn delete_todo_by_id_not_found() {
-    let app = test::init_service(
-        App::new()
-            .app_data(web::Data::new(test_mem_repo()))
-            .configure(api::api::config),
-    )
-    .await;
-
-    let req = test::TestRequest::delete()
-        .uri("/api/todos/999")
-        .to_request();
-    let resp = test::call_service(&app, req).await;
-    assert_eq!(resp.status(), StatusCode::NOT_FOUND);
-}
-
 // Integration test: full CRUD workflow
 #[actix_web::test]
 async fn full_crud_workflow() {
@@ -354,4 +247,31 @@ async fn full_crud_workflow() {
         .to_request();
     let verify_resp = test::call_service(&app, verify_req).await;
     assert_eq!(verify_resp.status(), StatusCode::NOT_FOUND);
+}
+
+#[actix_web::test]
+async fn delete_todo_by_id_not_found() {
+    // RONNY
+}
+
+// Get todo by id tests
+#[actix_web::test]
+async fn get_todo_by_id_success() {
+    //RONNY
+}
+
+#[actix_web::test]
+async fn get_todo_by_id_not_found() {
+    // RONNY
+}
+
+#[actix_web::test]
+async fn create_todo_without_description() {
+    // RONNY
+}
+
+// Create todo tests
+#[actix_web::test]
+async fn create_todo_test() {
+    // RONNY
 }

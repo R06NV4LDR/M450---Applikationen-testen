@@ -1,5 +1,8 @@
 #![allow(non_snake_case)]
-use std::sync::Arc;
+use std::{
+    iter,
+    sync::{Arc, Mutex},
+};
 
 use actix_cors::Cors;
 use actix_files::Files;
@@ -14,19 +17,42 @@ use dotenvy::dotenv;
 use serde::Serialize;
 use TodoRustBackend::{
     api,
-    repository::{mysql_repo::MysqlRepo, RepoBox},
+    repository::{mem_repo::MemRepo, mysql_repo::MysqlRepo, RepoBox},
 };
+
+fn parse_arg(arg: String) -> String {
+    if arg.starts_with("-") {
+        return arg.replace("-", "");
+    } else {
+        return "".to_string();
+    }
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
-    let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let manager = ConnectionManager::<MysqlConnection>::new(database_url);
-    let pool = r2d2::Pool::builder()
-        .build(manager)
-        .expect("Failed to create pool.");
-    let mysql_repo = MysqlRepo { pool };
-    let repo: RepoBox = Arc::new(mysql_repo);
+    let args = std::env::args();
+    let mut setup_mem = false;
+    args.into_iter().skip(1).for_each(|x| {
+        if parse_arg(x) == "m" {
+            setup_mem = true;
+        }
+    });
+
+    let repo: RepoBox;
+    if (!setup_mem) {
+        let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+        let manager = ConnectionManager::<MysqlConnection>::new(database_url);
+        let pool = r2d2::Pool::builder()
+            .build(manager)
+            .expect("Failed to create pool.");
+        let mysql_repo = MysqlRepo { pool };
+        repo = Arc::new(mysql_repo);
+    } else {
+        repo = Arc::new(MemRepo {
+            inner: Arc::new(Mutex::new(Vec::new())),
+        })
+    }
 
     HttpServer::new(move || {
         let cors = Cors::default()

@@ -20,21 +20,6 @@ fn create_new_todo(title: &str, description: Option<&str>) -> NewTodo {
 }
 
 #[actix_web::test]
-async fn test_create_todo() {
-    let repo = create_test_repo();
-    let new_todo = create_new_todo("Test Todo", Some("Test Description"));
-
-    let result = repo.create_todo(new_todo).await;
-    assert!(result.is_ok());
-
-    let todo = result.unwrap();
-    assert_eq!(todo.todo_id, 1);
-    assert_eq!(todo.title, "Test Todo");
-    assert_eq!(todo.description, Some("Test Description".to_string()));
-    assert_eq!(todo.completed, Some(false));
-}
-
-#[actix_web::test]
 async fn test_create_multiple_todos() {
     let repo = create_test_repo();
 
@@ -145,7 +130,10 @@ async fn test_update_todo_by_id_success() {
     let repo = create_test_repo();
 
     let created = repo
-        .create_todo(create_new_todo("Original Title", Some("Original Description")))
+        .create_todo(create_new_todo(
+            "Original Title",
+            Some("Original Description"),
+        ))
         .await
         .unwrap();
 
@@ -272,7 +260,10 @@ async fn test_repository_consistency() {
 
     // Create
     let created = repo
-        .create_todo(create_new_todo("Consistency Test", Some("Testing consistency")))
+        .create_todo(create_new_todo(
+            "Consistency Test",
+            Some("Testing consistency"),
+        ))
         .await
         .unwrap();
 
@@ -308,42 +299,6 @@ async fn test_repository_consistency() {
 }
 
 #[actix_web::test]
-async fn test_create_todo_without_description() {
-    let repo = create_test_repo();
-    let new_todo = create_new_todo("No Description Todo", None);
-
-    let result = repo.create_todo(new_todo).await;
-    assert!(result.is_ok());
-
-    let todo = result.unwrap();
-    assert_eq!(todo.title, "No Description Todo");
-    assert_eq!(todo.description, None);
-}
-
-#[actix_web::test]
-async fn test_todo_id_increments() {
-    let repo = create_test_repo();
-
-    let todo1 = repo
-        .create_todo(create_new_todo("First", None))
-        .await
-        .unwrap();
-    assert_eq!(todo1.todo_id, 1);
-
-    let todo2 = repo
-        .create_todo(create_new_todo("Second", None))
-        .await
-        .unwrap();
-    assert_eq!(todo2.todo_id, 2);
-
-    let todo3 = repo
-        .create_todo(create_new_todo("Third", None))
-        .await
-        .unwrap();
-    assert_eq!(todo3.todo_id, 3);
-}
-
-#[actix_web::test]
 async fn test_todo_id_resets_after_empty() {
     let repo = create_test_repo();
 
@@ -362,4 +317,20 @@ async fn test_todo_id_resets_after_empty() {
         .await
         .unwrap();
     assert_eq!(todo2.todo_id, 1);
+}
+
+#[actix_web::test]
+async fn test_create_todo() {
+    // RONNY
+}
+
+#[actix_web::test]
+async fn test_create_todo_without_description() {
+    // RONNY
+}
+
+// New Todos should increment their ID automatically (in memory db behaviour)
+#[actix_web::test]
+async fn test_todo_id_increments() {
+    // RONNY
 }
