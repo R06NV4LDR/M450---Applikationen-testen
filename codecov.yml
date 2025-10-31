@@ -1,4 +1,11 @@
 # codecov.yml im Repo-Root
+
+coverage:
+  status:
+    project:
+      default: false   # kein globaler Mix-Status (der wäre 79%)
+
+
 flag_management:
   default_rules:
     carryforward: true   # wenn z.B. nur Frontend hochlädt, bleibt Backend-Status vom letzten Upload bestehen
