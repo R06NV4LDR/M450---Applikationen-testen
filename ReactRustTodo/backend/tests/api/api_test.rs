@@ -275,11 +275,25 @@ async fn get_todo_by_id_success() {
     )
     .await;
 
+    // Create a todo
+    let create_req = test::TestRequest::post()
+        .uri("/api/todos")
+        .set_json(&json!({ "title": "Test todo", "description": "Test description" }))
+        .to_request();
+    let create_resp = test::call_service(&app, create_req).await;
+    let created_todo: Todo = test::read_body_json(create_resp).await;
+
+    // Get the todo by id
     let req = test::TestRequest::get()
-        .uri("/api/todos/1")
+        .uri(&format!("/api/todos/{}", created_todo.todo_id))
         .to_request();
     let resp = test::call_service(&app, req).await;
-    assert_eq!(resp.status(), StatusCode::OK);
+    assert!(resp.status().is_success());
+
+    let todo: Todo = test::read_body_json(resp).await;
+    assert_eq!(todo.todo_id, created_todo.todo_id);
+    assert_eq!(todo.title, "Test todo");
+    assert_eq!(todo.description, Some("Test description".to_string()));
 }
 
 #[actix_web::test]
@@ -291,9 +305,7 @@ async fn get_todo_by_id_not_found() {
     )
     .await;
 
-    let req = test::TestRequest::get()
-        .uri("/api/todos/999")
-        .to_request();
+    let req = test::TestRequest::get().uri("/api/todos/999").to_request();
     let resp = test::call_service(&app, req).await;
     assert_eq!(resp.status(), StatusCode::NOT_FOUND);
 }
@@ -335,5 +347,8 @@ async fn create_todo_success() {
     assert!(resp.status().is_success());
     let created_todo: Todo = test::read_body_json(resp).await;
     assert_eq!(created_todo.title, "New todo");
-    assert_eq!(created_todo.description, Some("New description".to_string()));
+    assert_eq!(
+        created_todo.description,
+        Some("New description".to_string())
+    );
 }
