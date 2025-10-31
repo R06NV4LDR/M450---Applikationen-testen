@@ -191,7 +191,7 @@ test.describe('Todos page', () => {
     const headings = page.getByRole('heading', { level: 3 });
     await expect(headings).toHaveCount(initialTodos.length);
 
-    const firstDisplayedTitle = initialTodos[0].title;
+    const firstDisplayedTitle = (await headings.first().textContent())?.trim() ?? '';
 
     await page.getByTestId('DeleteIcon').first().click();
 
