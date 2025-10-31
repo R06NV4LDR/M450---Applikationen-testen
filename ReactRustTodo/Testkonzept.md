@@ -82,16 +82,16 @@ Die folgenden Komponenten und Module werden getestet:
    - Manuelle Tests der kompletten User Journeys
    - API-Tests mit Tools wie Postman/curl
 
-### Test-Driven Development (TDD)
-Neue Features werden nach TDD-Prinzipien entwickelt:
-1. Test schreiben (Red)
-2. Minimale Implementierung (Green)
-3. Refactoring (Refactor)
+### Test-Later Development (TLD)
+Tests werden nach der Code Implementierung geschrieben. Das macht bei uns am meisten Sinn da Code bereits existiert.
+1. Minimale implementierung 
+2. Refactoring 
+3. Testing
 
 ## Item pass / fail criteria
 
 ### Erfolgskriterien
-- **Backend API**: HTTP 200/201 für erfolgreiche Operationen
+- **Backend API**: HTTP 200 für erfolgreiche Operationen
 - **Frontend**: Komponenten rendern ohne React-Fehler
 - **Datenbank**: CRUD-Operationen erfolgreich ausgeführt
 - **Integration**: Frontend kann Backend erreichen und Daten austauschen
@@ -123,7 +123,7 @@ Neue Features werden nach TDD-Prinzipien entwickelt:
 - **Bug Reports** - Strukturierte Fehlerdokumentation
 
 ### Werkzeuge
-- **Backend Testing**: Rust `cargo test`, Postman/curl für API-Tests
+- **Backend Testing**: Rust `cargo test`,curl für API-Tests
 - **Frontend Testing**: Jest, React Testing Library, ESLint
 - **Database Testing**: Diesel CLI für Migrations
 - **Manual Testing**: Browser DevTools, Postman
@@ -166,7 +166,7 @@ Neue Features werden nach TDD-Prinzipien entwickelt:
 
 ### Test-Datenbank
 - **Separate Test-DB**: Isoliert von Entwicklungsdatenbank
-- **In-Memory Option**: Für schnelle Unit Tests (SQLite)
+- **In-Memory Option**: Für schnelle Unit Tests
 - **Migration Reset**: Saubere Datenbank für jeden Testlauf
 
 ## Schedule
@@ -180,17 +180,3 @@ Neue Features werden nach TDD-Prinzipien entwickelt:
 | **Integration Tests** | Woche 3 | API-Endpunkt Tests, Frontend-Backend Integration |
 | **System Tests** | Woche 4 | End-to-End Workflows, Bug Fixing |
 | **Documentation** | Ende Woche 4 | Test Reports, Final Documentation |
-
-### Meilensteine
-- **Backend API vollständig getestet** - Ende Woche 2
-- **Frontend Komponenten validiert** - Ende Woche 3
-- **Alle kritischen Bugs behoben** - Ende Woche 4
-- **Projekt bereit für Abgabe** - Vorabend letzter Tag vor Abgabe
-
-## Verantwortlichkeiten
-
-- **Testkonzept**: Entwicklungsteam
-- **Test-Implementierung**: Entwicklungsteam
-- **Test-Ausführung**: Entwicklungsteam + Qualitätskontrolle
-- **Bug-Fixing**: Entwicklungsteam
-- **Test-Dokumentation**: Entwicklungsteam

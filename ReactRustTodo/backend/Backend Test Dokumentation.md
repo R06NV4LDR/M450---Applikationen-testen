@@ -40,3 +40,7 @@ Model Tests (18 tests) - tests/models.rs
 - Edge cases (long text, special characters, Unicode, newlines, quotes)
 - Optional fields handling
 - Debug trait
+
+## Integration Test
+
+Integration Tests wurden zusätzlich in einem Shell Script definiert um die End-to-End Funktionalität der Applikation zu testen. [Source Code](./integration_test.sh)]
