@@ -4,7 +4,7 @@
 
 ## Einleitung
 
-ReactRustTodo ist eine einfache Todo-Anwendung mit einem **Rust Backend** (Actix-Web Framework) und einem **React Frontend** (TypeScript, Vite). Die Anwendung ermöglicht es Benutzern, Todo-Einträge zu erstellen, anzuzeigen, zu bearbeiten und zu löschen. Das Backend stellt eine REST-API bereit, die mit einer MySQL-Datenbank über Diesel ORM kommuniziert. Das Frontend nutzt Material-UI Komponenten und Zustand-Management für die Benutzeroberfläche.
+ReactRustTodo ist eine einfache Todo-Anwendung mit einem **Rust Backend** (Actix-Web Framework) und einem **React Frontend** (TypeScript, Vite). Die Anwendung ermöglicht es Benutzern, Todo-Einträge zu erstellen, anzuzeigen, zu bearbeiten und zu löschen. Das Backend stellt eine REST-API bereit, die mit einer MySQL-Datenbank über Diesel ORM kommuniziert. Das Frontend nutzt Material-UI Komponenten und komponenteninternen React-State für die Benutzeroberfläche.
 
 ## Test Items
 
@@ -20,7 +20,7 @@ Die folgenden Komponenten und Module werden getestet:
 ### Frontend (React/TypeScript)
 - **React-Komponenten** (App, Todos, CreateTodoModal, EditModal)
 - **HTTP-Client** (Axios für API-Kommunikation)
-- **State Management** (Zustand Store)
+- **State Management** (komponenteninterner React-State)
 - **UI-Bibliotheken** (Material-UI Integration)
 
 ### Integration
@@ -45,8 +45,8 @@ Die folgenden Komponenten und Module werden getestet:
 ### Frontend Features
 1. **Komponentenrendering** - Korrekte Anzeige aller UI-Komponenten
 2. **API-Integration** - HTTP-Requests an Backend-Endpunkte
-3. **State Management** - Todo-Zustand über Zustand Store
-4. **Formularvalidierung** - Eingabevalidierung für Todo-Erstellung/-Bearbeitung
+3. **State Management** - Komponenteninterner React-State
+4. **Formularverhalten** - Erstellung/Bearbeitung (einfache Pfade, keine strenge Clientvalidierung)
 5. **Benutzerinteraktionen** - CRUD-Operationen über UI
 
 ### End-to-End Features
@@ -79,8 +79,8 @@ Die folgenden Komponenten und Module werden getestet:
    - Jest für JavaScript/TypeScript Unit Tests
 
 4. **End-to-End Tests**
-   - Manuelle Tests der kompletten User Journeys
-   - API-Tests mit Tools wie Postman/curl
+   - Automatisierte E2E-Tests mit Playwright (Chromium/Firefox/WebKit)
+   - Optional ergänzende manuelle API-Tests (Postman/curl)
 
 ### Testvorgehen
 
@@ -168,13 +168,15 @@ Alle wesentlichen Code-Änderungen wurden im Team nach dem **Vier-Augen-Prinzip*
 
 ### Artefakte
 - **Testkonzept** (dieses Dokument)
-- **Test Cases** (siehe "Test Todos.md")
+- **Testfälle (Quellen)**
+  - Frontend: `ReactRustTodo/frontend/tests` (Jest + Playwright)
+  - Backend: `ReactRustTodo/backend/tests` und interne `#[cfg(test)]` Module
 - **Test Reports** - Ergebnisdokumentation pro Testlauf
 - **Bug Reports** - Strukturierte Fehlerdokumentation
 
 ### Werkzeuge
-- **Backend Testing**: Rust `cargo test`,curl für API-Tests
-- **Frontend Testing**: Jest, React Testing Library, ESLint
+- **Backend Testing**: Rust `cargo test`, curl für API-Tests
+- **Frontend Testing**: Jest, React Testing Library, Playwright, ESLint
 - **Database Testing**: Diesel CLI für Migrations
 - **Manual Testing**: Browser DevTools, Postman
 
@@ -244,6 +246,7 @@ Alle wesentlichen Code-Änderungen wurden im Team nach dem **Vier-Augen-Prinzip*
 - HTTP‑Mocks: `jest.mock('axios')` für den Controller sowie `global.fetch` für Fetch‑basierte Pfade.
 - E2E: Playwright mit Vite Dev‑Server (Konfig: `ReactRustTodo/frontend/playwright.config.ts`).
 - CI: `.github/workflows/frontend.yml` führt Jest (inkl. Coverage) und Playwright aus und lädt Coverage zu Codecov (Flag `frontend`).
+ - Hinweis: HTTP‑Pfade nutzen sowohl `axios` (im `Controller.ts`) als auch `fetch` (in `Todos.tsx`); beide werden in Tests gemockt (Jest/Playwright).
 
 ### Testarten und -ebenen
 - Unit (Logik)

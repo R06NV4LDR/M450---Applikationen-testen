@@ -36,3 +36,13 @@ Die CI/CD Pipeline ist unterteilt für Frontend und Backend.
 ### Backend Dokumentation
 
 - [Dokumentation](./ReactRustTodo/backend/Backend%20Test%20Dokumentation.md)
+
+**Frontend**
+
+- Jest Unit/Component Tests laufen inkl. Coverage und werden zu Codecov (Flag `frontend`) hochgeladen
+- Playwright E2E-Tests in Chromium/Firefox/WebKit gegen laufenden Dev-Server
+
+### Frontend Dokumentation
+
+- [Testkonzept (gesamt)](./ReactRustTodo/Testkonzept.md)
+- [Frontend Test Dokumentation](./ReactRustTodo/frontend/Frontend_Test_Documentation.md)
