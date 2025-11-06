@@ -2,7 +2,7 @@
 
 *Nach IEEE 829 Standard*
 
-## Introduction
+## Einleitung
 
 ReactRustTodo ist eine einfache Todo-Anwendung mit einem **Rust Backend** (Actix-Web Framework) und einem **React Frontend** (TypeScript, Vite). Die Anwendung ermöglicht es Benutzern, Todo-Einträge zu erstellen, anzuzeigen, zu bearbeiten und zu löschen. Das Backend stellt eine REST-API bereit, die mit einer MySQL-Datenbank über Diesel ORM kommuniziert. Das Frontend nutzt Material-UI Komponenten und Zustand-Management für die Benutzeroberfläche.
 
@@ -82,11 +82,61 @@ Die folgenden Komponenten und Module werden getestet:
    - Manuelle Tests der kompletten User Journeys
    - API-Tests mit Tools wie Postman/curl
 
-### Test-Later Development (TLD)
-Tests werden nach der Code Implementierung geschrieben. Das macht bei uns am meisten Sinn da Code bereits existiert.
-1. Minimale implementierung 
+### Testvorgehen
+
+#### Test-Later Development (TLD) für ReactRustTodo
+Für dieses bestehende Projekt wurden Tests nach der Code-Implementierung geschrieben, da die Codebasis bereits vollständig vorhanden war.
+1. Minimale Implementierung 
 2. Refactoring 
 3. Testing
+
+**Begründung:** ReactRustTodo dient als Referenzprojekt zur Demonstration verschiedener Testarten und -techniken. Eine nachträgliche Implementierung der Tests war hier sinnvoll.
+
+#### Test Driven Development (TDD) - Separates Lernprojekt
+Um TDD-Praktiken zu erlernen und anzuwenden, wurde ein **separates kleineres Projekt** durchgeführt, bei dem der klassische TDD-Zyklus konsequent eingehalten wurde:
+
+1. **Red** - Test schreiben (schlägt zunächst fehl)
+2. **Green** - Minimale Implementierung für erfolgreichen Test
+3. **Refactor** - Code verbessern bei grünen Tests
+
+**Grund für separates Projekt:** Um die bestehende, funktionierende Codebasis von ReactRustTodo nicht zu gefährden und TDD in einem kontrollierten Umfeld zu üben.
+
+**Dokumentation TDD-Projekt:** [TDD Projekt Referenz](./TDD_Projekt_Referenz.md)
+
+### Code Reviews und Qualitätssicherung
+
+#### Vier-Augen-Prinzip mit Pull Requests
+
+Alle wesentlichen Code-Änderungen wurden im Team nach dem **Vier-Augen-Prinzip** durchgeführt:
+
+**Primäre Methode: GitHub Pull Requests**
+- Formeller Review-Prozess über GitHub PRs
+- Pull Requests wurden erstellt, reviewt und gemergt
+- Review-Kommentare und Diskussionen dokumentiert
+- CI/CD automatisch ausgeführt vor Merge
+- Nachweis: [GitHub Pull Requests](https://github.com/R06NV4LDR/M450---Applikationen-testen/pulls?q=is%3Apr)
+
+**Ergänzend: Synchrone Code Reviews**
+- Direktes Pair-Programming bei komplexen Features
+- Gemeinsame Code-Besprechungen für schnelle Iteration
+
+- **Review-Fokus**:
+  - Code-Qualität und Clean Code Prinzipien
+  - Testabdeckung und Testqualität
+  - Fehlerbehandlung und Edge Cases
+  - Dokumentation und Kommentare
+
+**Vorgehensweise:**
+1. Feature-Branch erstellen und implementieren
+2. Pull Request mit Beschreibung erstellen
+3. Review durch Teammate (Kommentare, Requested Changes)
+4. Anpassungen umsetzen und pushen
+5. Approval nach erfolgreichem Review
+6. Merge nach grüner CI/CD Pipeline
+
+**Begründung:** Pull Requests bieten Nachvollziehbarkeit und formelle Dokumentation, während synchrone Reviews bei komplexen Themen schnellere Iterationen ermöglichen.
+
+**Dokumentation:** [Detaillierte Code Review Dokumentation](./Code_Review_Dokumentation.md)
 
 ## Item pass / fail criteria
 
@@ -180,3 +230,64 @@ Tests werden nach der Code Implementierung geschrieben. Das macht bei uns am mei
 | **Integration Tests** | Woche 3 | API-Endpunkt Tests, Frontend-Backend Integration |
 | **System Tests** | Woche 4 | End-to-End Workflows, Bug Fixing |
 | **Documentation** | Ende Woche 4 | Test Reports, Final Documentation |
+
+## Frontend Testkonzept (React/TypeScript)
+
+### Zielsetzung und Scope
+- Absicherung der UI‑Komponenten, Interaktionen und des HTTP‑Layers gemäss bestehender Implementierung.
+- Abdeckung der wichtigsten Nutzerflüsse (CRUD) sowie Fehler‑ und Leerzustände.
+- Zielabdeckung: ≥ 80% (Codecov Flag „frontend“), vgl. `codecov.yml`.
+
+### Testumgebung und Werkzeuge
+- Test Runner: Jest mit `jsdom` (Konfig: `ReactRustTodo/frontend/jest.config.cjs`).
+- UI‑Tests: React Testing Library + `@testing-library/jest-dom` (Setup: `ReactRustTodo/frontend/jest.setup.ts`).
+- HTTP‑Mocks: `jest.mock('axios')` für den Controller sowie `global.fetch` für Fetch‑basierte Pfade.
+- E2E: Playwright mit Vite Dev‑Server (Konfig: `ReactRustTodo/frontend/playwright.config.ts`).
+- CI: `.github/workflows/frontend.yml` führt Jest (inkl. Coverage) und Playwright aus und lädt Coverage zu Codecov (Flag `frontend`).
+
+### Testarten und -ebenen
+- Unit (Logik)
+  - Controller (Axios‑Layer): Korrekte URLs/Bodies und Fehlerpropagation (`ReactRustTodo/frontend/tests/jest/unit/Controller.test.ts`).
+  - Presentational Wrapper: `BoxProvider` Rendering/Props (`ReactRustTodo/frontend/tests/jest/unit/BoxProvider.test.tsx`).
+- Component (isoliert)
+  - `App`: Health‑Check OK/Fehler/Unexpected JSON, initialer Fehlerzustand (`ReactRustTodo/frontend/tests/jest/component/App.test.tsx`).
+  - `Todos`: Rendern, Leerzustand, Löschen, Statuswechsel, Pagination inkl. First/Last (`ReactRustTodo/frontend/tests/jest/component/Todos.test.tsx`).
+  - `CreateTodoModal`: Öffnen/Schliessen, Submit, Loading, Fehlerpfad, Reset (`ReactRustTodo/frontend/tests/jest/component/CreateTodoModal.test.tsx`).
+  - `EditModal`: Vorausgefüllt, Update inkl. unveränderlicher Felder, Loading, Reset (`ReactRustTodo/frontend/tests/jest/component/EditModal.test.tsx`).
+- Integration (Jest)
+  - Platzhalter vorhanden (`ReactRustTodo/frontend/tests/jest/integration/todos.flow.test.tsx`) – kann zu realem Flow‑Test ausgebaut werden.
+- End‑to‑End (Playwright)
+  - Nutzerjourneys mit gemockten Backend‑Routen: Rendern/Erstellen/Edieren/Löschen (`ReactRustTodo/frontend/tests/playwright/tests/todos.spec.ts`).
+  - Zusätzliche Smoke/Beispiele (`ReactRustTodo/frontend/tests/playwright/tests/example.spec.ts`).
+
+Hinweis: Ein dedizierter globaler Zustand‑Store (z. B. Zustand) ist im aktuellen Code nicht im Einsatz; getestet wird komponenteninterner React‑State und der HTTP‑Controller.
+
+### Mocking‑ und Testdaten‑Strategie
+- Netzwerk
+  - Axios wird mittels `jest.mock('axios')` gestubbt; `fetch` wird in Tests als `global.fetch = jest.fn()` ersetzt.
+  - Fehlerpfade (HTTP non‑OK, Exceptions, unerwartetes JSON) werden simuliert und UI‑Reaktion verifiziert.
+- Komponenten/Module
+  - Teure/irrelevante Kind‑Komponenten werden bei Bedarf gemockt (z. B. `Todos` innerhalb `App.test.tsx`).
+- Fixtures
+  - Realistische Todo‑Objekte/Listen (0, 2, 15, 25 Einträge) für Pagination‑ und Edge‑Cases (`tests/jest/fixtures`).
+
+### Frontend‑spezifische Abnahmekriterien
+
+- UI zeigt konsistente Zustände (Loading/Success/Error) abhängig von API‑Antworten.
+- Benutzeraktionen erzeugen erwartete Effekte (CRUD) und passende Aufrufe im Controller.
+- Pagination ist deterministisch und zeigt die erwartete Anzahl Einträge pro Seite.
+- Keine ungefangenen Exceptions/React‑Fehler im Renderpfad der getesteten Komponenten.
+
+### Metriken und Coverage
+- Jest Coverage via `npm run test:cov`, Artefakt: `ReactRustTodo/frontend/coverage/lcov.info`.
+- Codecov‑Flag `frontend` mit Zielwert 80% und Toleranz 2% (`codecov.yml`).
+
+### CI/CD‑Integration (Frontend)
+- Workflow `frontend.yml`:
+  - Job „Jest“: Install, `npm run test:cov`, Upload Coverage (Flag `frontend`).
+  - Job „Playwright“: Start Backend/Frontend, führe E2E in Chromium/Firefox/WebKit aus; Prozesse werden anschliessend beendet.
+
+### Wartung und Weiterentwicklung
+- Neue Komponenten erhalten Component‑Tests (Render, Events, Fehlerpfade) und ggf. ergänzende Controller‑Unit‑Tests.
+- Regressions reproduzierbar machen und als Tests fixieren; Snapshots sparsam einsetzen.
+- Testdaten konsolidieren (Fixtures/Factories), semantische Queries (`getByRole`, `getByLabelText`) bevorzugen.
